@@ -4,8 +4,8 @@ import trout from "./trout.jpeg";
 import tuna from "./tuna.jpeg";
 
 export const Images = {
-    salmon,
-    shark,
-    trout,
-    tuna,
+  salmon,
+  shark,
+  trout,
+  tuna,
 };
