@@ -39,27 +39,21 @@ export class ClassApp extends Component {
   handleGuessSubmit = (event) => {
     event.preventDefault();
     const {
-      userGuess,
       initialFishes,
       currentFishIndex,
-      answersLeft,
+      userGuess,
       correctCount,
       incorrectCount,
+      answersLeft,
     } = this.state;
     const currentFish = initialFishes[currentFishIndex];
-
     if (userGuess.toLowerCase() === currentFish.name.toLowerCase()) {
-      this.setState({
-        correctCount: correctCount + 1,
-        answersLeft: answersLeft.filter(
-          (answer) => answer !== currentFish.name
-        ),
-      });
+      this.setState({ correctCount: correctCount + 1 });
     } else {
       this.setState({ incorrectCount: incorrectCount + 1 });
     }
-
     this.setState({
+      answersLeft: answersLeft.filter((answer) => answer !== currentFish.name),
       currentFishIndex: currentFishIndex + 1,
       userGuess: "",
     });

@@ -44,12 +44,10 @@ export function FunctionalApp() {
     const currentFish = initialFishes[currentFishIndex];
     if (userGuess.toLowerCase() === currentFish.name.toLowerCase()) {
       setCorrectCount(correctCount + 1);
-      setAnswersLeft(
-        answersLeft.filter((answer) => answer !== currentFish.name)
-      );
     } else {
       setIncorrectCount(incorrectCount + 1);
     }
+    setAnswersLeft(answersLeft.filter((answer) => answer !== currentFish.name));
     setCurrentFishIndex(currentFishIndex + 1);
     setUserGuess("");
   };
