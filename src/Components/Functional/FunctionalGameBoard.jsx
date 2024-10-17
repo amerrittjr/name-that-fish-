@@ -1,15 +1,22 @@
-export function FunctionalGameBoard({
-  nextFishToName,
-  userGuess,
-  handleGuessChange,
-  handleGuessSubmit,
-}) {
+import { useState } from "react";
+export function FunctionalGameBoard({ nextFishToName, handleGuessSubmit }) {
+  const [userGuess, setUserGuess] = useState("");
+
+  const handleGuessChange = (event) => {
+    setUserGuess(event.target.value);
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    handleGuessSubmit(userGuess);
+    setUserGuess("");
+  };
   return (
     <div id="game-board">
       <div id="fish-container">
         <img src={nextFishToName.url} alt={nextFishToName.name} />
       </div>
-      <form id="fish-guess-form" onSubmit={handleGuessSubmit}>
+      <form id="fish-guess-form" onSubmit={onSubmit}>
         <label htmlFor="fish-guess">What kind of fish is this?</label>
         <input
           type="text"

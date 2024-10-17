@@ -27,21 +27,13 @@ export class ClassApp extends Component {
         url: Images.shark,
       },
     ],
-    totalCount: 0,
     currentFishIndex: 0,
-    userGuess: "",
   };
 
-  handleGuessChange = (event) => {
-    this.setState({ userGuess: event.target.value });
-  };
-
-  handleGuessSubmit = (event) => {
-    event.preventDefault();
+  handleGuessSubmit = (userGuess) => {
     const {
       initialFishes,
       currentFishIndex,
-      userGuess,
       correctCount,
       incorrectCount,
       answersLeft,
@@ -55,7 +47,6 @@ export class ClassApp extends Component {
     this.setState({
       answersLeft: answersLeft.filter((answer) => answer !== currentFish.name),
       currentFishIndex: currentFishIndex + 1,
-      userGuess: "",
     });
   };
 
@@ -66,28 +57,27 @@ export class ClassApp extends Component {
       answersLeft,
       initialFishes,
       currentFishIndex,
-      userGuess,
     } = this.state;
     const nextFishToName = initialFishes[currentFishIndex];
 
     return (
       <>
-        <>
-          <ClassScoreBoard
-            incorrectCount={incorrectCount}
-            correctCount={correctCount}
-            answersLeft={answersLeft}
-          />
-          {nextFishToName && (
-            <ClassGameBoard
-              nextFishToName={nextFishToName}
-              userGuess={userGuess}
-              handleGuessChange={this.handleGuessChange}
-              handleGuessSubmit={this.handleGuessSubmit}
+        {answersLeft.length > 0 && (
+          <>
+            <ClassScoreBoard
+              incorrectCount={incorrectCount}
+              correctCount={correctCount}
+              answersLeft={answersLeft}
             />
-          )}
-        </>
-        {!nextFishToName && (
+            {nextFishToName && (
+              <ClassGameBoard
+                nextFishToName={nextFishToName}
+                handleGuessSubmit={this.handleGuessSubmit}
+              />
+            )}
+          </>
+        )}
+        {answersLeft.length === 0 && (
           <ClassFinalScore
             correctCount={correctCount}
             totalCount={initialFishes.length}

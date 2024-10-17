@@ -13,7 +13,7 @@ export function FunctionalApp() {
     "tuna",
     "shark",
   ]);
-  const [initialFishes] = useState([
+  const initialFishes = [
     {
       name: "trout",
       url: Images.trout,
@@ -30,42 +30,33 @@ export function FunctionalApp() {
       name: "shark",
       url: Images.shark,
     },
-  ]);
-
+  ];
   const [currentFishIndex, setCurrentFishIndex] = useState(0);
-  const [userGuess, setUserGuess] = useState("");
 
-  const handleGuessChange = (event) => {
-    setUserGuess(event.target.value);
-  };
-
-  const handleGuessSubmit = (event) => {
-    event.preventDefault();
+  const handleGuessSubmit = (userGuess) => {
     const currentFish = initialFishes[currentFishIndex];
-    if (userGuess.toLowerCase() === currentFish.name.toLowerCase()) {
+    if (currentFish.name === userGuess) {
       setCorrectCount(correctCount + 1);
     } else {
       setIncorrectCount(incorrectCount + 1);
     }
     setAnswersLeft(answersLeft.filter((answer) => answer !== currentFish.name));
     setCurrentFishIndex(currentFishIndex + 1);
-    setUserGuess("");
   };
-
   const nextFishToName = initialFishes[currentFishIndex];
 
   return (
     <>
-      <FunctionalScoreBoard
-        incorrectCount={incorrectCount}
-        correctCount={correctCount}
-        answersLeft={answersLeft}
-      />
+      {answersLeft.length > 0 && (
+        <FunctionalScoreBoard
+          incorrectCount={incorrectCount}
+          correctCount={correctCount}
+          answersLeft={answersLeft}
+        />
+      )}
       {nextFishToName && (
         <FunctionalGameBoard
           nextFishToName={nextFishToName}
-          userGuess={userGuess}
-          handleGuessChange={handleGuessChange}
           handleGuessSubmit={handleGuessSubmit}
         />
       )}
