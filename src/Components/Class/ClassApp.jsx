@@ -8,7 +8,6 @@ export class ClassApp extends Component {
   state = {
     incorrectCount: 0,
     correctCount: 0,
-    answersLeft: ["trout", "salmon", "tuna", "shark"],
     initialFishes: [
       {
         name: "trout",
@@ -28,15 +27,21 @@ export class ClassApp extends Component {
       },
     ],
     currentFishIndex: 0,
+    userGuess: "",
   };
 
-  handleGuessSubmit = (userGuess) => {
+  handleGuessChange = (event) => {
+    this.setState({ userGuess: event.target.value });
+  };
+
+  handleGuessSubmit = (event) => {
+    event.preventDefault();
     const {
       initialFishes,
       currentFishIndex,
+      userGuess,
       correctCount,
       incorrectCount,
-      answersLeft,
     } = this.state;
     const currentFish = initialFishes[currentFishIndex];
     if (userGuess.toLowerCase() === currentFish.name.toLowerCase()) {
@@ -45,8 +50,8 @@ export class ClassApp extends Component {
       this.setState({ incorrectCount: incorrectCount + 1 });
     }
     this.setState({
-      answersLeft: answersLeft.filter((answer) => answer !== currentFish.name),
       currentFishIndex: currentFishIndex + 1,
+      userGuess: "",
     });
   };
 
@@ -54,11 +59,15 @@ export class ClassApp extends Component {
     const {
       correctCount,
       incorrectCount,
-      answersLeft,
       initialFishes,
       currentFishIndex,
+      userGuess,
     } = this.state;
     const nextFishToName = initialFishes[currentFishIndex];
+    const answersLeft = initialFishes
+      .slice(currentFishIndex)
+      .map((fish) => fish.name);
+    const totalCount = initialFishes.length;
 
     return (
       <>
@@ -72,15 +81,17 @@ export class ClassApp extends Component {
             {nextFishToName && (
               <ClassGameBoard
                 nextFishToName={nextFishToName}
+                userGuess={userGuess}
+                handleGuessChange={this.handleGuessChange}
                 handleGuessSubmit={this.handleGuessSubmit}
               />
             )}
           </>
         )}
-        {answersLeft.length === 0 && (
+        {!nextFishToName && (
           <ClassFinalScore
             correctCount={correctCount}
-            totalCount={initialFishes.length}
+            totalCount={totalCount}
           />
         )}
       </>
